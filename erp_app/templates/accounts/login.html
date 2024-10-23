@@ -9,10 +9,12 @@
   </head>
   <body>
     <h1>ERP</h1>
-    <h2>Log in</h2>
-    <form method="POST">
-      {% csrf_token %} {{ form.as_p }}
-      <button type="submit">Submit</button>
-    </form>
+    <div class="container">
+      <h2>Log in</h2>
+      <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   </body>
 </html>
