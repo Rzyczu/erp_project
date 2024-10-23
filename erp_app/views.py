@@ -4,23 +4,23 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.views import View
-from .forms import UserRegistrationForm, UserLoginForm
+from .forms import UserRegisterForm, UserLoginForm
 
 def auth_view(request):
     return render(request, 'auth.html')
 
-def registration_view(request):
+def register_view(request):
     if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)  # Save the form without committing to the DB
             user.set_password(form.cleaned_data['password'])  # Hash the password
             user.save()  # Save the user with hashed password
             login(request, user)  # Log in the user after saving
-            return redirect('dashboard')  # Redirect on successful registration
+            return redirect('dashboard')  # Redirect on successful register
     else:
-        form = UserRegistrationForm()
-    return render(request, 'accounts/registration.html', {'form': form})
+        form = UserRegisterForm()
+    return render(request, 'accounts/register.html', {'form': form})
 
 def login_view(request):
     if request.method == 'POST':
