@@ -40,17 +40,13 @@ def login_view(request):
 
     return render(request, 'accounts/login.html', {'form': form})
 
-def dashboard_view(request):
-    users = User.objects.all()
-    context = {'users': users}
-    return render(request, 'erp/dashboard.html', context)
+class DashboardView(LoginRequiredMixin, View):
+    login_url = '/login/'  # Redirect to this URL if the user is not logged in
 
-class ProtectedView(LoginRequiredMixin, View): 
-    login_url = '/login/'
-    redirect_field_name = 'redirect_to'
-    
     def get(self, request):
-        return render(request, 'protected.html')
+        users = User.objects.all()
+        context = {'users': users}
+        return render(request, 'erp/dashboard.html', context)
 
     
 def logout_view(request):
