@@ -12,8 +12,13 @@
     <div class="container">
       <h2>Log in</h2>
       <form method="POST" action="{% url 'login' %}">
-        {% csrf_token %} {{ form.as_p }}
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{next}}" />
+        {{ form.as_p }}
         <button type="submit">Submit</button>
+      </form>
+
+      <p>Don't have an account? <a href="{% url 'register' %}" > Register here</a></p>
       </form>
     </div>
   </body>
