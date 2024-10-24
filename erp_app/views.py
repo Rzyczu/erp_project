@@ -5,8 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.views import View
 
-from .forms import UserRegisterForm, UserLoginForm, GroupForm, GroupUserForm
-from .models import Group
+from .forms import UserRegisterForm, UserLoginForm, TeamForm, TeamUserForm
+from .models import Team
 
 def auth_view(request):
     return render(request, 'auth.html')
@@ -47,8 +47,8 @@ class DashboardView(LoginRequiredMixin, View):
 
     def get(self, request):
         user = request.user
-        user_groups = user.custom_groups.all()
-        context = {'user_groups': user_groups}
+        user_teams = user.teams.all()
+        context = {'user_teams': user_teams}
         return render(request, 'erp/dashboard.html', context)
 
     
@@ -57,30 +57,30 @@ def logout_view(request):
     return redirect('auth')
 
 @login_required
-def group_list_view(request):
-    groups = Group.objects.prefetch_related('users')  
-    return render(request, 'groups/list.html', {'groups': groups})
+def team_list_view(request):
+    teams = Team.objects.prefetch_related('users')  
+    return render(request, 'teams/list.html', {'teams': teams})
 
 @login_required
-def group_create_view(request):
+def team_create_view(request):
     if request.method == 'POST':
-        form = GroupForm(request.POST)
+        form = TeamForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('group_list')
+            return redirect('team_list')
     else:
-        form = GroupForm()
-    return render(request, 'groups/form.html', {'form': form})
+        form = TeamForm()
+    return render(request, 'teams/form.html', {'form': form})
 
 @login_required
-def assign_users_to_group_view(request):
+def team_assignation_view(request):
     if request.method == 'POST':
-        form = GroupUserForm(request.POST)
+        form = TeamUserForm(request.POST)
         if form.is_valid():
-            group = form.cleaned_data['group']
+            team = form.cleaned_data['team']
             users = form.cleaned_data['users']
-            group.users.set(users)  # Assign users to the group
-            return redirect('group_list')
+            team.users.set(users)  # Assign users to the team
+            return redirect('team_list')
     else:
-        form = GroupUserForm()
-    return render(request, 'groups/assignation.html', {'form': form})
+        form = TeamUserForm()
+    return render(request, 'teams/assignation.html', {'form': form})

@@ -7,7 +7,7 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
-    path('groups/', views.group_list_view, name='group_list'),
-    path('groups/create/', views.group_create_view, name='group_create'),
-    path('groups/assign/', views.assign_users_to_group_view, name='assign_users_to_group'),
+    path('teams/', views.team_list_view, name='team_list'),
+    path('teams/create/', views.team_create_view, name='team_create'),
+    path('teams/assign/', views.team_assignation_view, name='team_assignation'),
 ]

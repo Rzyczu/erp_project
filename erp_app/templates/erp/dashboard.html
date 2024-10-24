@@ -11,18 +11,18 @@
     <div class="container">
       <h1>Dashboard</h1>
       <span> Welcome, {{request.user.username}}. </span>
-      {% if user_groups %}
+      {% if user_teams %}
       <p>Jesteś w grupach:</p>
       <ul>
-        {% for group in user_groups %}
-        <li>{{ group.name }}</li>
+        {% for team in user_teams %}
+        <li>{{ team.name }}</li>
         {% endfor %}
       </ul>
       {% else %}
       <p>Nie należysz do żadnej grupy.</p>
       {% endif %}
 
-      <a href="{% url 'group_list' %}">Group list</a>
+      <a href="{% url 'team_list' %}">Teams list</a>
       <a href="{% url 'logout' %}">Logout</a>
     </div>
   </body>

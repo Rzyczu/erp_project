@@ -9,21 +9,21 @@
   </head>
   <body>
     <div class="container">
-      <h1>Group List</h1>
+      <h1>Group Team</h1>
       <ul>
-        {% for group in groups %}
+        {% for team in teams %}
         <li>
-          {{ group.name }} ({{ group.users.count }} members)
+          {{ team.name }} ({{ team.users.count }} members)
           <ul>
-            {% for user in group.users.all %}
+            {% for user in team.users.all %}
             <li>{{ user.username }} ({{ user.email }})</li>
             {% endfor %}
           </ul>
         </li>
         {% endfor %}
       </ul>
-      <a href="{% url 'group_create' %}">Create New Group</a>
-      <a href="{% url 'assign_users_to_group' %}">Assign Users to Group</a>
+      <a href="{% url 'team_create' %}">Create New Team</a>
+      <a href="{% url 'team_assignation' %}">Assign Users to Team</a>
     </div>
   </body>
 </html>
