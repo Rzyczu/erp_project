@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ERP</title>
+    <link href="{% static 'styles/styles.css'%}" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Group List</h1>
+      <ul>
+        {% for group in groups %}
+        <li>
+          {{ group.name }} ({{ group.users.count }} members)
+          <ul>
+            {% for user in group.users.all %}
+            <li>{{ user.username }} ({{ user.email }})</li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% endfor %}
+      </ul>
+      <a href="{% url 'group_create' %}">Create New Group</a>
+      <a href="{% url 'assign_users_to_group' %}">Assign Users to Group</a>
+    </div>
+  </body>
+</html>

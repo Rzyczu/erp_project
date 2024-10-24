@@ -1,12 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class Item(models.Model):
-    sku = models.CharField(max_length=64)
-    ean = models.CharField(max_length=64)
-    name = models.CharField(max_length=255)
-    quantity = models.IntegerField()
-    price = models.IntegerField()
-    place = models.CharField(max_length=64)
-    
+class Group(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(null=True, blank=True)
+    users = models.ManyToManyField(User, related_name='custom_groups', blank=True)
+
     def __str__(self):
-        return f"{self.sku} - {self.name}"
+        return self.name

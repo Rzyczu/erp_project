@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ERP</title>
+    <link href="{% static 'styles/styles.css'%}" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Assign Users to Group</h1>
+      <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit">Assign Users</button>
+      </form>
+    </div>
+  </body>
+</html>
