@@ -5,8 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.views import View
 
-from .forms import UserRegisterForm, UserLoginForm, TeamForm, TeamUserForm
-from .models import Team
+from .forms import UserRegisterForm, UserLoginForm, TeamForm, TeamUserForm, TeamUserRoleForm
+from .models import Team, TeamUserRole
 
 def auth_view(request):
     return render(request, 'auth.html')
@@ -58,7 +58,7 @@ def logout_view(request):
 
 @login_required
 def team_list_view(request):
-    teams = Team.objects.prefetch_related('users')  
+    teams = Team.objects.prefetch_related('teamuserrole_set__user').all()  # Prefetch roles
     return render(request, 'teams/list.html', {'teams': teams})
 
 @login_required
@@ -73,14 +73,29 @@ def team_create_view(request):
     return render(request, 'teams/form.html', {'form': form})
 
 @login_required
-def team_assignation_view(request):
+def assign_users_to_team_view(request): 
     if request.method == 'POST':
         form = TeamUserForm(request.POST)
         if form.is_valid():
             team = form.cleaned_data['team']
             users = form.cleaned_data['users']
-            team.users.set(users)  # Assign users to the team
+            team.users.set(users)
             return redirect('team_list')
     else:
         form = TeamUserForm()
+    return render(request, 'teams/assignation.html', {'form': form}) 
+
+@login_required
+def team_assignation_view(request):
+    if request.method == 'POST':
+        form = TeamUserRoleForm(request.POST)
+        if form.is_valid():
+            role = form.cleaned_data['role']
+            if role == 'project_manager' and not request.user.is_superuser:
+                form.add_error('role', "Only superusers can assign the Project Manager role.")
+            else:
+                form.save()
+                return redirect('team_list')
+    else:
+        form = TeamUserRoleForm()
     return render(request, 'teams/assignation.html', {'form': form})

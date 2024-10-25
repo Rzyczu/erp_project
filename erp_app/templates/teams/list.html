@@ -9,14 +9,17 @@
   </head>
   <body>
     <div class="container">
-      <h1>Group Team</h1>
+      <h1>Teams</h1>
       <ul>
         {% for team in teams %}
         <li>
-          {{ team.name }} ({{ team.users.count }} members)
+          {{ team.name }} ({{ team.teamuserrole_set.count }} members)
           <ul>
-            {% for user in team.users.all %}
-            <li>{{ user.username }} ({{ user.email }})</li>
+            {% for teamuserrole in team.teamuserrole_set.all %}
+            <li>
+              {{ teamuserrole.user.username }} ({{ teamuserrole.user.email }}) -
+              Role: {{ teamuserrole.get_role_display }}
+            </li>
             {% endfor %}
           </ul>
         </li>

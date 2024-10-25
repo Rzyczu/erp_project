@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .models import Team
+from .models import Team, TeamUserRole
 
 class UserRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, min_length=8)
@@ -46,3 +46,11 @@ class TeamForm(forms.ModelForm):
 class TeamUserForm(forms.Form):
     team = forms.ModelChoiceField(queryset=Team.objects.all())
     users = forms.ModelMultipleChoiceField(queryset=User.objects.all(), widget=forms.CheckboxSelectMultiple)
+    
+class TeamUserRoleForm(forms.ModelForm):
+    class Meta:
+        model = TeamUserRole
+        fields = ['team', 'user', 'role']
+        widgets = {
+            'role': forms.Select(choices=TeamUserRole.ROLE_CHOICES),
+        }
