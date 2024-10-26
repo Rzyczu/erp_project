@@ -24,12 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .map(input => input.value.trim())
             .filter(value => value);
     
-        if (milestones.length === 0) {
-            alert("Please add at least one milestone.");
-            event.preventDefault();
-            return;
-        }
-    
         const milestonesField = document.createElement("input");
         milestonesField.type = "hidden";
         milestonesField.name = "milestones";
