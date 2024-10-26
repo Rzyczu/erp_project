@@ -1,0 +1,219 @@
+body {
+    background-color: #212526;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 25rem;
+    margin: 3.125rem auto;
+    padding: 1.25rem;
+    background-color: #BABDBF;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.1);
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #BABDBF;
+    color: #212526;
+}
+
+.logo-img {
+    height: 50px;
+}
+
+.nav div {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.nav a, .dropdown-btn {
+    color: #212526;
+    text-decoration: none;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #A68D85;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    min-width: 10rem;
+    margin-top: 0.5rem;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    top: 1.5rem;
+    pointer-events: none;
+}
+
+.dropdown.open .dropdown-content {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dropdown-content a {
+    color: #212526;
+    padding: 0.5rem 1rem;
+    display: block;
+    text-decoration: none;
+}
+
+.dropdown-content a:hover {
+    background-color: #8B6E61;
+}
+
+.nav-user-settings {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #BABDBF;
+    color: #212526;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+p {
+    margin-top: auto;
+}
+
+.helptext {
+    color: #735B53;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+h1 {
+    text-align: center;
+    color: #212526;
+}
+
+h2 {
+    text-align: center;
+    color: #735B53;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    padding: 0.625rem;
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.25rem;
+}
+
+button {
+    padding: 0.625rem;
+    margin: 0.3125rem;
+    background-color: #735B53;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-small {
+    padding: 0.312rem;
+    margin: 0.3125rem;
+    background-color: transparent;
+    color: #735B53;
+    border: 1px solid #735B53;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+}
+
+.btn-small:hover {
+    background-color: #733934;
+    color: white;
+
+}
+
+button:hover {
+    background-color: #733934;
+}
+
+a {
+    color: #733934;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.container .errorlist, .error {
+    color: rgb(179, 34, 8) !important;
+    list-style-type: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 1.25rem;
+    border-radius: 0.3125rem;
+    width: 80%;
+    max-width: 37.5rem;
+    position: relative;
+    z-index: 1001;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 0.625rem;
+    right: 0.9375rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.flex {
+    display: flex;
+}
+
+.message.tags {
+    color: #733934;
+    font-style: italic;
+}
+
+.flex-end{
+    align-items: flex-end
+}
