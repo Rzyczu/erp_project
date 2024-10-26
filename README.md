@@ -3,6 +3,10 @@
 
 A Django-based ERP (Enterprise Resource Planning) system designed to manage and automate various business processes, including finance, inventory, human resources, and more.
 
+## Demo live
+
+https://erp-django-project.onrender.com/
+
 ## Features
 
 - **User Registration and Authentication**: Users can create accounts and log in to the system.
@@ -146,10 +150,11 @@ Contributions are welcome! To get started:
 4. Push to the branch (`git push origin feature-branch`).
 5. Create a Pull Request.
 
+## Screens
+
+![image](https://github.com/user-attachments/assets/74a6aedb-59a1-4824-a218-d9e70fc0d7ab)
+
+
 ## License
 
 This project is licensed under the terms of the LICENSE file.
-
-## Contact
-
-For any questions or feedback, please reach out to [your-email@example.com].
