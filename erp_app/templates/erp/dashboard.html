@@ -2,28 +2,29 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ERP - home hage</title>
-    <link href="{% static 'styles/styles.css'%}" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link href="{% static 'styles/styles.css' %}" rel="stylesheet" />
   </head>
   <body>
-    <div class="container">
-      <h1>Dashboard</h1>
-      <span> Welcome, {{request.user.username}}. </span>
-      {% if user_teams %}
-      <p>Jesteś w grupach:</p>
-      <ul>
-        {% for team in user_teams %}
-        <li>{{ team.name }}</li>
-        {% endfor %}
-      </ul>
-      {% else %}
-      <p>Nie należysz do żadnej grupy.</p>
-      {% endif %}
+    <h1>Welcome, {{ request.user.username }}</h1>
 
-      <a href="{% url 'team_list' %}">Teams list</a>
-      <a href="{% url 'logout' %}">Logout</a>
-    </div>
+    {% if user_teams %}
+    <p>You are part of the following teams:</p>
+    <ul>
+      {% for team in user_teams %}
+      <li>
+        {{ team.name }} -
+        <a href="{% url 'team_page_view' team.id %}">Select team</a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>You are not part of any team.</p>
+    {% endif %}
+
+    <a href="{% url 'team_create' %}">Add Team</a>
+    <a href="{% url 'logout' %}">Logout</a>
   </body>
 </html>

@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+</head>
+<body>
+
+<h1>Edit Task: {{ task.name }}</h1>
+<form method="post" enctype="multipart/form-data" id="taskForm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div id="milestones-container">
+        <label>Milestones:</label>
+        {% for milestone in milestones %}
+        <div class="milestone-item">
+            <input type="text" name="milestone" value="{{ milestone }}" />
+            <button type="button" onclick="removeMilestone(this)">Remove</button>
+        </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="addMilestoneButton">Add Milestone</button>
+    <button type="submit">Save Task</button>
+</form>
+
+<script src="{% static 'js/add_task.js' %}"></script>
+</body>
+</html>

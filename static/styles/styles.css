@@ -8,3 +8,36 @@ body {
     padding: 0 !important;
     margin: 0 !important;
 }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Dark background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top */
+}
+
+/* Modal content styling */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    z-index: 1001; /* Keep above the overlay */
+}
+
+/* Close button in the top-right */
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}

@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>Project Page</title>
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+</head>
+<body>
+
+<h1>Project: {{ project.name }}</h1>
+<p><strong>Description:</strong> {{ project.description }}</p>
+
+<h2>Team Members and Their Tasks</h2>
+<ul>
+    {% for member, tasks_dict in tasks_by_user.items %}
+        <li>
+            {{ member.user.get_full_name }} ({{ member.get_role_display }})
+            {% for status, user_tasks in tasks_dict.user_tasks.items %}
+                <h3>{{ status|title }}</h3>
+                <ul>
+                    {% for task in user_tasks %}
+                        <li>
+                            <span>{{ task.name }}</span>
+                            <button onclick="showTaskDetails({{ task.id }})">View Details</button>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </li>
+    {% empty %}
+        <li>No tasks assigned to team members.</li>
+    {% endfor %}
+</ul>
+
+<h2>Unassigned Tasks</h2>
+<ul>
+    {% for task in unassigned_tasks %}
+        <li>
+            <span>{{ task.name }} - {{ task.get_status_display }}</span>
+            <button onclick="showTaskDetails({{ task.id }})">View Details</button>
+        </li>
+    {% empty %}
+        <li>No unassigned tasks.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'add_task_view' project.id %}">Add Task</a>
+<a href="{% url 'team_page_view' project.team.id %}">Back to Team Page</a>
+
+<!-- Modal for Task Details -->
+<div id="taskDetailsOverlay" class="modal-overlay" style="display:none;">
+  <div id="taskDetailsModal" class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Task Details</h2>
+      <p><strong>Name:</strong> <span id="modalTaskName">-</span></p>
+      <p><strong>Description:</strong> <span id="modalTaskDescription">-</span></p>
+      <p><strong>Due Date:</strong> <span id="modalTaskDueDate">-</span></p>
+
+      <p><strong>Assigned User:</strong> 
+          <span id="modalAssignedUser">-</span>
+          <button onclick="assignTaskToMe()">Assign to Me</button>
+      </p>
+
+      <p><strong>Status:</strong> 
+          <span id="modalTaskStatus">-</span>
+          <button onclick="changeStatus('not_started')">Not Started</button>
+          <button onclick="changeStatus('in_progress')">In Progress</button>
+          <button onclick="changeStatus('completed')">Completed</button>
+      </p>
+
+      <h3>Milestones</h3>
+      <ul id="modalMilestones">
+          <li>No milestones available.</li>
+      </ul>
+
+      <h3>Images</h3>
+      <div id="modalImages"></div>
+
+      <button onclick="editTask()">Edit Task</button>
+      <button onclick="deleteTask()">Delete Task</button>
+  </div>
+</div>
+
+<script src="{% static 'js/project_page.js' %}"></script>
+
+</body>
+</html>

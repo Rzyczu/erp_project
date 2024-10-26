@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Project</title>
+    <link href="{% static 'styles/styles.css' %}" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>Add Project</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }} 
+      <button type="submit">Add Project</button>
+    </form>
+    <a href="{% url 'team_page_view' team.id %}">Back to Team Page</a>
+  </body>
+</html>

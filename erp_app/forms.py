@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .models import Team, TeamUserRole
+from .models import Team, TeamUserRole, Project, Task
 
 class UserRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, min_length=8)
@@ -54,3 +54,22 @@ class TeamUserRoleForm(forms.ModelForm):
         widgets = {
             'role': forms.Select(choices=TeamUserRole.ROLE_CHOICES),
         }
+        
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['name', 'description']
+
+class TaskForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        project = kwargs.pop('project', None)  # Pobieramy obiekt projektu
+        super().__init__(*args, **kwargs)
+        
+        # Filtrujemy użytkowników dostępnych do przypisania na członków zespołu projektu
+        if project:
+            team_users = TeamUserRole.objects.filter(team=project.team).values_list('user', flat=True)
+            self.fields['assigned_user'].queryset = User.objects.filter(id__in=team_users)
+
+    class Meta:
+        model = Task
+        fields = ['name', 'description', 'assigned_user', 'due_date', 'status', 'images']

@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Details</title>
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+</head>
+<body>
+
+<h2>Task Details: {{ task.name }}</h2>
+<p><strong>Description:</strong> {{ task.description }}</p>
+<p><strong>Due Date:</strong> {{ task.due_date|date:"Y-m-d" }}</p>
+<p><strong>Assigned User:</strong> {{ task.assigned_user.get_full_name }}</p>
+<p><strong>Status:</strong> {{ task.get_status_display }}</p>
+
+<h3>Milestones</h3>
+<ul>
+    {% for milestone in task.milestones %}
+        <li>{{ milestone }}</li>
+    {% empty %}
+        <li>No milestones defined.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'edit_task_view' task.id %}">Edit Task</a>
+
+</body>
+</html>
