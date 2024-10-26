@@ -1,15 +1,9 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
-    <link href="{% static 'styles/styles.css' %}" rel="stylesheet" />
-  </head>
-  <body>
-    <div class="container">
-    <h1>Welcome, {{ request.user.username }}</h1>
+{% extends 'erp/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Welcome, {{ request.user.username }}!</h1>
 
     {% if user_teams %}
     <p>You are part of the following teams:</p>
@@ -25,16 +19,14 @@
     <p>You are not part of any team.</p>
     {% endif %}
 
+    <br /><hr>
     <h2>Actions</h2>
-    <div>
-      <a href="{% url 'team_create' %}">Add Team</a>
-    </div>
-    <div>
-      <a href="{% url 'join_team_view' %}">Join the Team</a> <!-- Link to join a team by identifier -->
-    </div>
-    <div>
-      <a href="{% url 'logout' %}">Logout</a>
-    </div>
+      <form action="{% url 'team_create' %}" method="get">
+        <button type="submit">Add Team</button>
+      </form>
+      <form action="{% url 'join_team_view' %}" method="get">
+        <button type="submit">Join the Team</button>
+      </form>
   </div>
-  </body>
-</html>
+  {% endblock %}
+

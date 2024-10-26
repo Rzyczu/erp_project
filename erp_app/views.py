@@ -9,7 +9,7 @@ from django.views import View
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.db import transaction
-from .forms import UserRegisterForm, UserLoginForm, TeamForm, TeamUserForm, TeamUserRoleForm, ProjectForm, TaskForm
+from .forms import UserRegisterForm, UserLoginForm, EditProfileForm, TeamForm, TeamUserForm, TeamUserRoleForm, ProjectForm, TaskForm
 from .models import Team, TeamUserRole, Project, Task
 from .decorators import project_manager_required
 import json
@@ -44,6 +44,18 @@ def login_view(request):
         form.add_error(None, "Invalid username or password.")
     return render(request, 'accounts/login.html', {'form': form})
 
+@login_required
+def edit_profile_view(request):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('dashboard')
+    else:
+        form = EditProfileForm(instance=request.user)
+    return render(request, 'accounts/edit_profile.html', {'form': form})
+
 class DashboardView(LoginRequiredMixin, View):
     login_url = reverse_lazy('login')
 
@@ -68,7 +80,7 @@ def team_create_view(request):
         team = form.save()
         TeamUserRole.objects.create(user=request.user, team=team, role='project_manager')
         return redirect('team_page_view', team_id=team.id)
-    return render(request, 'erp/teams/form.html', {'form': form})
+    return render(request, 'erp/teams/create_team.html', {'form': form})
 
 @login_required
 @login_required

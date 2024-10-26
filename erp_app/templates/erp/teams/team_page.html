@@ -1,26 +1,11 @@
-{% load static %}
+{% extends 'erp/base.html' %}
 {% load project_permissions %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ team.name }}</title>
-    <link href="{% static 'styles/styles.css' %}" rel="stylesheet">
-</head>
-<body>
+
+{% block title %}Team {{ team.name }}{% endblock %}
+
+{% block content %}
     <h1>Team {{ team.name }}</h1>
     <p>{{ team.description }}</p>
-    <p>Team identifier: {{ team.identifier }}</p>
-
-    <!-- Wyświetlanie komunikatów -->
-    {% if messages %}
-        <div>
-            {% for message in messages %}
-                <p class="{{ message.tags }}">{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
 
     <p>
         Project Manager:
@@ -32,7 +17,15 @@
             No project manager assigned.
         {% endfor %}
     </p>
-
+    <p>Team identifier: <b>{{ team.identifier }}</b></p><br />
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+            <p class="{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <hr>
     <h2>Team Members</h2>
     <ul>
         {% for member in team_members %}
@@ -43,6 +36,7 @@
             
             {% if is_pm and member.role != 'project_manager' %}
                 <!-- Tylko Project Manager może zobaczyć te przyciski i nie może zmienić swojej roli -->
+                <div class="flex flex-end">
                 <form method="post" action="{% url 'change_role_view' team.id member.user.id %}">
                     {% csrf_token %}
                     <select name="new_role" required>
@@ -52,12 +46,13 @@
                             {% endif %}
                         {% endfor %}
                     </select>
-                    <button type="submit">Change Role</button>
+                    <button class="btn-small" type="submit">Change Role</button>
                 </form>
                 <form method="post" action="{% url 'delete_user_view' team.id member.user.id %}">
                     {% csrf_token %}
-                    <button type="submit">Delete User</button>
+                    <button class="btn-small" type="submit">Delete User</button>
                 </form>
+            </div>
             {% endif %}
         </li>
         {% empty %}
@@ -71,7 +66,7 @@
         <button type="submit">Leave the Team</button>
     </form>
   {% endif %}
-
+    <br /><hr>
     <h2>Projects</h2>
     <ul>
         {% for project in projects %}
@@ -83,11 +78,14 @@
             <li>No projects assigned.</li>
         {% endfor %}
     </ul>
-
+    <br />
+    {% is_project_manager request.user team.id as is_pm %}
     {% if is_pm %}
-        <a href="{% url 'add_project_view' team.id %}">Add Project</a>
+    <form method="get" action="{% url 'add_project_view' team.id %}">
+        <button type="submit">Add project</button>
+    </form>
     {% endif %}
-    
+    <br />
     <a href="{% url 'dashboard' %}">Back to Dashboard</a>
-</body>
-</html>
+    {% endblock %}
+

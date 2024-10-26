@@ -1,33 +1,29 @@
+{% extends 'erp/base.html' %}  <!-- This should be the first line -->
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Task</title>
-    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
-</head>
-<body>
 
+{% block title %}Add Task{% endblock %}
+
+{% block content %}
 <h1>Add Task</h1>
 <form id="addTaskForm" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <div id="milestones-container">
         <label>Milestones:</label>
+        <button class="btn-small" type="button" id="addMilestoneButton">Add Milestone</button> 
         {% if milestones %}
-            {% for milestone in milestones %}
-                <div class="milestone-item">
-                    <input type="text" name="milestones[]" value="{{ milestone }}" />
-                    <button type="button" onclick="removeMilestone(this)">Delete</button>
-                </div>
-            {% endfor %}
-        {% endif %}
-        <button type="button" id="addMilestoneButton">Add Milestone</button>
-    </div>
-
-    <button type="submit">Create Task</button>
+        {% for milestone in milestones %}
+            <div class="milestone-item">
+                <input type="text" name="milestones[]" value="{{ milestone }}" />
+                <button class="btn-small" type="button"  onclick="removeMilestone(this)">Delete</button>
+            </div>
+        {% endfor %}
+    {% endif %}
+   </div>
+    <button type="submit">Save</button>
 </form>
+<br />
+<a href="{% url 'project_page_view' project.team.id project.id %}">Back to Project Page</a>
 
 <script src="{% static 'js/add_task.js' %}"></script>
-</body>
-</html>
+{% endblock %}

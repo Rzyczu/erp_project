@@ -1,32 +1,23 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ERP</title>
-    <link href="{% static 'styles/styles.css'%}" rel="stylesheet" />
-  </head>
-  <body>
-    <div class="container">
-      <h1>Teams</h1>
-      <ul>
-        {% for team in teams %}
-        <li>
-          {{ team.name }} ({{ team.teamuserrole_set.count }} members)
-          <ul>
+{% extends 'erp/base.html' %}
+
+{% block title %}Teams{% endblock %}
+
+{% block content %}
+<h1>Teams</h1>
+<ul>
+    {% for team in teams %}
+    <li>
+        {{ team.name }} ({{ team.teamuserrole_set.count }} members)
+        <ul>
             {% for teamuserrole in team.teamuserrole_set.all %}
             <li>
-              {{ teamuserrole.user.username }} ({{ teamuserrole.user.email }}) -
-              Role: {{ teamuserrole.get_role_display }}
+                {{ teamuserrole.user.username }} ({{ teamuserrole.user.email }}) - Role: {{ teamuserrole.get_role_display }}
             </li>
             {% endfor %}
-          </ul>
-        </li>
-        {% endfor %}
-      </ul>
-      <a href="{% url 'team_create' %}">Create New Team</a>
-      <a href="{% url 'team_assignation' %}">Assign Users to Team</a>
-    </div>
-  </body>
-</html>
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'team_create' %}">Create New Team</a>
+<a href="{% url 'team_assignation' %}">Assign Users to Team</a>
+{% endblock %}

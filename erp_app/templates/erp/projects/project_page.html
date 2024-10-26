@@ -1,14 +1,9 @@
+{% extends 'erp/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="csrf-token" content="{{ csrf_token }}">
-    <title>Project Page</title>
-    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
-</head>
-<body>
 
+{% block title %}Project: {{ project.name }}{% endblock %}
+
+{% block content %}
 <h1>Project: {{ project.name }}</h1>
 <p><strong>Description:</strong> {{ project.description }}</p>
 
@@ -18,34 +13,37 @@
         <li>
             {{ member.user.get_full_name }} ({{ member.get_role_display }})
             {% for status, user_tasks in tasks_dict.user_tasks.items %}
-                <h3>{{ status|title }}</h3>
+            {% for task in user_tasks %}
+                <h3>{{ task.get_status_display }}</h3>
                 <ul>
-                    {% for task in user_tasks %}
-                        <li>
-                            <span>{{ task.name }}</span>
-                            <button onclick="showTaskDetails({{ project.team.id }}, {{ project.id }}, {{ task.id }})">View Details</button>
-                        </li>
-                    {% endfor %}
+                    <li>
+                        <span>{{ task.name }}</span>
+                        <button class="btn-small" onclick="showTaskDetails({{ project.team.id }}, {{ project.id }}, {{ task.id }})">View Details</button>
+                    </li>
                 </ul>
             {% endfor %}
+        {% endfor %}
+        
         </li>
     {% empty %}
         <li>No tasks assigned to team members.</li>
     {% endfor %}
 </ul>
-
+<br />
 <h2>Unassigned Tasks</h2>
 <ul>
     {% for task in unassigned_tasks %}
         <li>
             <span>{{ task.name }} - {{ task.get_status_display }}</span>
-            <button onclick="showTaskDetails({{ project.team.id }}, {{ project.id }}, {{ task.id }})">View Details</button>        </li>
+            <button class="btn-small" onclick="showTaskDetails({{ project.team.id }}, {{ project.id }}, {{ task.id }})">View Details</button>        </li>
     {% empty %}
         <li>No unassigned tasks.</li>
     {% endfor %}
 </ul>
-
-<a href="{% url 'add_task_view' project.team.id project.id %}">Add Task</a>
+<form method="get" action="{% url 'add_task_view' project.team.id project.id %}">
+    <button type="submit">Add Task</button>
+</form>
+<br />
 <a href="{% url 'team_page_view' project.team.id %}">Back to Team Page</a>
 
 <!-- Modal for Task Details -->
@@ -59,14 +57,14 @@
 
       <p><strong>Assigned User:</strong> 
           <span id="modalAssignedUser">-</span>
-          <button onclick="assignTaskToMe()">Assign to Me</button>
+          <button class="btn-small" onclick="assignTaskToMe()">Assign to Me</button>
       </p>
 
       <p><strong>Status:</strong> 
           <span id="modalTaskStatus">-</span>
-          <button onclick="changeStatus('not_started')">Not Started</button>
-          <button onclick="changeStatus('in_progress')">In Progress</button>
-          <button onclick="changeStatus('completed')">Completed</button>
+          <button class="btn-small" onclick="changeStatus('not_started')">Not Started</button>
+          <button class="btn-small" onclick="changeStatus('in_progress')">In Progress</button>
+          <button class="btn-small" onclick="changeStatus('completed')">Completed</button>
       </p>
 
       <h3>Milestones</h3>
@@ -76,13 +74,12 @@
 
       <h3>Images</h3>
       <div id="modalImages"></div>
-
+      <br />
       <button onclick="editTask()">Edit Task</button>
       <button onclick="deleteTask()">Delete Task</button>
   </div>
 </div>
 
 <script src="{% static 'js/project_page.js' %}"></script>
+{% endblock %}
 
-</body>
-</html>

@@ -19,11 +19,17 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Convert milestones to JSON before form submission
-    document.getElementById("addTaskForm").addEventListener("submit", function (event) {  // Updated to match the form ID in HTML
+    document.getElementById("addTaskForm").addEventListener("submit", function (event) {
         const milestones = Array.from(milestonesContainer.querySelectorAll("input[name='milestone']"))
             .map(input => input.value.trim())
             .filter(value => value);
-
+    
+        if (milestones.length === 0) {
+            alert("Please add at least one milestone.");
+            event.preventDefault();
+            return;
+        }
+    
         const milestonesField = document.createElement("input");
         milestonesField.type = "hidden";
         milestonesField.name = "milestones";

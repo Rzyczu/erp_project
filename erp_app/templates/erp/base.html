@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ERP App{% endblock %}</title>
+    <link href="{% static 'styles/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+    <nav class="nav">
+        <div class="logo">
+            <img src="{% static 'images/logo.png' %}" alt="ERP Logo" class="logo-img">
+        </div>
+        <div class="nav-center">
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <div class="dropdown">
+                <a class="dropdown-btn">Teams</a>
+                <div class="dropdown-content">
+                    {% for team in user_teams %}
+                        <a href="{% url 'team_page_view' team.id %}">{{ team.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if active_project %}
+                <div class="dropdown">
+                    <a class="dropdown-btn">Projects</a>
+                    <div class="dropdown-content">
+                        {% for project in active_projects %}
+                            <a href="{% url 'project_page_view' project.team.id project.id %}">{{ project.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="nav-user-settings">
+            <a href="{% url 'edit_profile' %}">{{ request.user.username }} ⚙️</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>Rzyczu ERP APP 2024 &copy;</p>
+    </footer>
+    
+    <script>
+        document.querySelectorAll('.dropdown-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const dropdown = btn.parentElement;
+                dropdown.classList.toggle('open');
+            });
+        });
+
+        window.addEventListener('click', (event) => {
+            document.querySelectorAll('.dropdown').forEach(dropdown => {
+                if (!dropdown.contains(event.target)) {
+                    dropdown.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

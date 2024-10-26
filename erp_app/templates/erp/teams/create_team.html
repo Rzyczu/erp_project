@@ -1,0 +1,14 @@
+{% extends 'erp/base.html' %}
+
+{% block title %}Create Team{% endblock %}
+
+{% block content %}
+<h1>Create Team</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Team</button>
+</form>
+<br/>
+<a href="{% url 'team_list' %}">Back to Teams List</a>
+{% endblock %}

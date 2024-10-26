@@ -38,6 +38,11 @@ class UserLoginForm(forms.Form):
     username = forms.CharField(max_length=64)
     password = forms.CharField(widget=forms.PasswordInput, min_length=8)
 
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'username']
+
 class TeamForm(forms.ModelForm):
     class Meta:
         model = Team
