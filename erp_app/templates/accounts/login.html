@@ -4,22 +4,20 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ERP - log in</title>
+    <title>ERP - Log In</title>
     <link href="{% static 'styles/styles.css' %}" rel="stylesheet" />
   </head>
   <body>
-    <h1>ERP</h1>
     <div class="container">
-      <h2>Log in</h2>
+      <h1>ERP</h1>
+      <h2>Log In</h2>
       <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{next}}" />
         {{ form.as_p }}
         <button type="submit">Submit</button>
       </form>
-
-      <p>Don't have an account? <a href="{% url 'register' %}" > Register here</a></p>
-      </form>
+      <p>Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
     </div>
   </body>
 </html>

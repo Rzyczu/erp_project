@@ -1,5 +1,74 @@
 body {
-    background-color: bisque;
+    background-color: #212526;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 25rem; /* 400px */
+    margin: 3.125rem auto; /* 50px */
+    padding: 1.25rem; /* 20px */
+    background-color: #BABDBF;
+    border-radius: 0.5rem; /* 8px */
+    box-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.1); /* 2px 10px */
+}
+
+p  {
+    margin-top:auto;
+}
+
+.helptext{
+    color: #735B53;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+h1 {
+    text-align: center;
+    color: #212526;
+}
+
+h2 {
+    text-align: center;
+    color: #735B53;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    padding: 0.625rem; /* 10px */
+    border: 0.0625rem solid #ccc; /* 1px */
+    border-radius: 0.25rem; /* 4px */
+}
+
+button {
+    padding: 0.625rem; /* 10px */
+    margin: 0.3125rem; /* 5px */
+    background-color: #735B53;
+    color: white;
+    border: none;
+    border-radius: 0.25rem; /* 4px */
+    cursor: pointer;
+    font-size: 1rem; /* 16px */
+}
+
+button:hover {
+    background-color: #733934;
+}
+
+a {
+    color: #733934;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 .container .errorlist {
@@ -22,22 +91,20 @@ body {
     z-index: 1000; /* Ensure it's on top */
 }
 
-/* Modal content styling */
 .modal-content {
     background-color: white;
-    padding: 20px;
-    border-radius: 5px;
+    padding: 1.25rem; /* 20px */
+    border-radius: 0.3125rem; /* 5px */
     width: 80%;
-    max-width: 600px;
+    max-width: 37.5rem; /* 600px */
     position: relative;
     z-index: 1001; /* Keep above the overlay */
 }
 
-/* Close button in the top-right */
 .modal-content .close {
     position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 20px;
+    top: 0.625rem; /* 10px */
+    right: 0.9375rem; /* 15px */
+    font-size: 1.25rem; /* 20px */
     cursor: pointer;
 }
