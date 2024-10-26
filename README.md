@@ -153,6 +153,22 @@ Contributions are welcome! To get started:
 ## Screens
 
 ![image](https://github.com/user-attachments/assets/74a6aedb-59a1-4824-a218-d9e70fc0d7ab)
+View of landing page
+
+![image](https://github.com/user-attachments/assets/c0e8cd18-50e9-4c41-a0fd-add9b7a99f54)
+View of dashboard 
+
+![image](https://github.com/user-attachments/assets/bd3005ff-ffbf-4ad9-82e0-9ee4a0bdd5c8)
+View of team named "team test 1" on project manager account
+
+![image](https://github.com/user-attachments/assets/333d2e47-4083-4186-adc7-52c79e6eb0c5)
+View of team named "team test 1" on others users account
+
+![image](https://github.com/user-attachments/assets/e14cc9e8-2392-465a-85ed-f87aecac1f61)
+View of project page
+
+![image](https://github.com/user-attachments/assets/97a04df7-a6d4-4b4d-9767-8963f549cd0d)
+View of task detail
 
 
 ## License
