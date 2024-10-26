@@ -5,11 +5,19 @@ A Django-based ERP (Enterprise Resource Planning) system designed to manage and 
 
 ## Features
 
-- **User Management**: Role-based access control to ensure secure data access.
-- **Inventory Management**: Track stock levels, manage suppliers, and control inventory movements.
-- **Finance Module**: Manage invoices, payments, and financial reports.
-- **Reports & Analytics**: Generate detailed reports and insights for business performance.
-- **Customizable Dashboard**: Overview of key metrics and quick access to critical information.
+- **User Registration and Authentication**: Users can create accounts and log in to the system.
+- **Team Management**:
+  - After logging in, users can create a new team or join an existing team using its unique 6-digit ID.
+  - Each team is assigned a random 6-digit identifier for easy identification.
+  - The user who creates a team automatically becomes its Project Manager (PM).
+  - When joining a team, users can select their role within the team.
+- **Project and Task Management**:
+  - Project Managers (PMs) can create projects within their team.
+  - For each project, tasks can be created, assigned, and tracked.
+  - Tasks have various statuses to indicate progress and can be assigned to any team member.
+- **Team Composition Management**: The Project Manager has the authority to manage the team's composition, including assigning or changing roles of members.
+- **Profile Management**: Users can update their personal details through the profile settings in the menu.
+"""
 
 ## Project Structure
 
@@ -77,14 +85,6 @@ The `erp_app` is a core module of the ERP system, responsible for managing vario
 
 - Contains unit tests for the application, ensuring that each functionality works as expected.
 - Tests may include validation of forms, views, and model functions.
-
-## Key Functionalities of `erp_app`
-
-- **User Management**: Create and edit users, assign roles and permissions.
-- **Product and Inventory Management**: Add, edit, and track products, control stock levels.
-- **Order Handling**: Create orders, assign to customers, update order status.
-- **Invoicing and Payments**: Generate invoices, manage payments and settlements.
-- **Report Generation**: Create reports based on data, such as sales, inventory levels, or financials.
 
 ## Getting Started
 
