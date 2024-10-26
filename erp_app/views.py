@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -6,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import View
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 from django.db import transaction
 from .forms import UserRegisterForm, UserLoginForm, TeamForm, TeamUserForm, TeamUserRoleForm, ProjectForm, TaskForm
 from .models import Team, TeamUserRole, Project, Task
@@ -63,10 +65,34 @@ def team_list_view(request):
 def team_create_view(request):
     form = TeamForm(request.POST or None)
     if form.is_valid():
-        form.save()
-        return redirect('team_list')
+        team = form.save()
+        TeamUserRole.objects.create(user=request.user, team=team, role='project_manager')
+        return redirect('team_page_view', team_id=team.id)
     return render(request, 'erp/teams/form.html', {'form': form})
 
+@login_required
+@login_required
+def join_team_view(request):
+    # Filter out the 'project_manager' role from the choices
+    role_choices = [choice for choice in TeamUserRole.ROLE_CHOICES if choice[0] != 'project_manager']
+    
+    if request.method == 'POST':
+        identifier = request.POST.get('identifier')
+        role = request.POST.get('role')
+        team = Team.objects.filter(identifier=identifier).first()
+        if team:
+            TeamUserRole.objects.create(user=request.user, team=team, role=role)
+            return redirect('team_page_view', team_id=team.id)
+        else:
+            return render(request, 'erp/teams/join_team.html', {
+                'error': 'Invalid team identifier.',
+                'roles': role_choices
+            })
+    
+    return render(request, 'erp/teams/join_team.html', {
+        'roles': role_choices
+    })
+    
 @login_required
 def team_assignation_view(request):
     form = TeamUserRoleForm(request.POST or None)
@@ -89,6 +115,46 @@ def team_page_view(request, team_id):
         'projects': projects,
         'team_members': team_members,
     })
+
+@login_required
+@project_manager_required
+@require_POST
+def change_role_view(request, team_id, user_id):
+    team = get_object_or_404(Team, id=team_id)
+    user = get_object_or_404(User, id=user_id)
+    new_role = request.POST.get('new_role')
+
+    with transaction.atomic():
+        if new_role == 'project_manager':
+            # Remove current PM role
+            TeamUserRole.objects.filter(team=team, role='project_manager').update(role='member')
+        TeamUserRole.objects.update_or_create(
+            user=user, team=team, defaults={'role': new_role}
+        )
+    return redirect('team_page_view', team_id=team_id)
+
+@login_required
+@project_manager_required
+@require_POST
+def delete_user_view(request, team_id, user_id):
+    team = get_object_or_404(Team, id=team_id)
+    user_role = TeamUserRole.objects.filter(team=team, user_id=user_id).first()
+    if user_role:
+        user_role.delete()
+    return redirect('team_page_view', team_id=team_id)
+
+@login_required
+@require_POST
+def leave_team_view(request, team_id):
+    team = get_object_or_404(Team, id=team_id)
+    user_role = TeamUserRole.objects.filter(team=team, user=request.user, role='project_manager').first()
+    if user_role:
+        messages.error(request, "As a Project Manager, you cannot leave the team.")
+        return redirect('team_page_view', team_id=team.id)
+    
+    TeamUserRole.objects.filter(team=team, user=request.user).delete()
+    messages.success(request, "Opuściłeś zespół.")
+    return redirect('dashboard')
 
 @login_required
 def project_page_view(request, team_id, project_id):

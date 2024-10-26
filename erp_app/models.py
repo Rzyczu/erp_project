@@ -3,12 +3,18 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 import os
+import random, string
 
 class Team(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
-    users = models.ManyToManyField(User, related_name='teams', blank=True)  # Keep this field temporarily
-    team_users = models.ManyToManyField(User, through='TeamUserRole', related_name='team_roles', blank=True)  # New field
+    identifier = models.CharField(max_length=6, unique=True, default='')
+
+    def save(self, *args, **kwargs):
+        if not self.identifier:
+            self.identifier = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 

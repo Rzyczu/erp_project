@@ -1,39 +1,76 @@
 {% load static %}
 {% load project_permissions %}
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ team.name }}</title>
-    <link href="{% static 'styles/styles.css' %}" rel="stylesheet" />
-  </head>
-  <body>
+    <link href="{% static 'styles/styles.css' %}" rel="stylesheet">
+</head>
+<body>
     <h1>Team {{ team.name }}</h1>
-    <p>Description: {{ team.description }}</p>
+    <p>{{ team.description }}</p>
+    <p>Team identifier: {{ team.identifier }}</p>
+
+    <!-- Wyświetlanie komunikatów -->
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <p>
         Project Manager:
         {% for member in team_members %}
-          {% if member.role == 'project_manager' %}
-          {{ member.user.username }} ({{ member.user.get_full_name }})
-          {% endif %}
+            {% if member.role == 'project_manager' %}
+                {{ member.user.username }} ({{ member.user.get_full_name }})
+            {% endif %}
         {% empty %}
-          No project manager assigned.
+            No project manager assigned.
         {% endfor %}
-      </p>
+    </p>
 
     <h2>Team Members</h2>
     <ul>
-      {% for member in team_members %}
-      <li>
-        {{ member.user.username }} ({{ member.user.get_full_name }}) - {{member.get_role_display }}
-      </li>
-      {% empty %}
-        No members assigned.
-      {% endfor %}
+        {% for member in team_members %}
+        <li>
+            {{ member.user.username }} ({{ member.user.get_full_name }}) - {{ member.get_role_display }}
+
+            {% is_project_manager request.user team.id as is_pm %}
+            
+            {% if is_pm and member.role != 'project_manager' %}
+                <!-- Tylko Project Manager może zobaczyć te przyciski i nie może zmienić swojej roli -->
+                <form method="post" action="{% url 'change_role_view' team.id member.user.id %}">
+                    {% csrf_token %}
+                    <select name="new_role" required>
+                        {% for role_key, role_value in member.ROLE_CHOICES %}
+                            {% if role_key != 'project_manager' %}
+                                <option value="{{ role_key }}" {% if member.role == role_key %}selected{% endif %}>{{ role_value }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Change Role</button>
+                </form>
+                <form method="post" action="{% url 'delete_user_view' team.id member.user.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Delete User</button>
+                </form>
+            {% endif %}
+        </li>
+        {% empty %}
+            <li>No members assigned.</li>
+        {% endfor %}
     </ul>
+    {% if not is_pm %}
+    <!-- Formularz opuszczenia zespołu dla użytkowników, którzy nie są PM -->
+    <form method="post" action="{% url 'leave_team_view' team.id %}">
+        {% csrf_token %}
+        <button type="submit">Leave the Team</button>
+    </form>
+  {% endif %}
 
     <h2>Projects</h2>
     <ul>
@@ -43,16 +80,14 @@
             <a href="{% url 'project_page_view' project.team.id project.id %}">Select project</a>
         </li>
         {% empty %}
-        No projects assigned.
+            <li>No projects assigned.</li>
         {% endfor %}
     </ul>
 
-    {# Set a variable to check if the user is a project manager for this team #}
-    {% is_project_manager request.user team.id as is_pm %}
-    
     {% if is_pm %}
         <a href="{% url 'add_project_view' team.id %}">Add Project</a>
     {% endif %}
+    
     <a href="{% url 'dashboard' %}">Back to Dashboard</a>
-  </body>
+</body>
 </html>
