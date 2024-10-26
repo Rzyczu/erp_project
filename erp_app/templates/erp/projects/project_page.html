@@ -23,7 +23,7 @@
                     {% for task in user_tasks %}
                         <li>
                             <span>{{ task.name }}</span>
-                            <button onclick="showTaskDetails({{ task.id }})">View Details</button>
+                            <button onclick="showTaskDetails({{ project.team.id }}, {{ project.id }}, {{ task.id }})">View Details</button>
                         </li>
                     {% endfor %}
                 </ul>
@@ -39,14 +39,13 @@
     {% for task in unassigned_tasks %}
         <li>
             <span>{{ task.name }} - {{ task.get_status_display }}</span>
-            <button onclick="showTaskDetails({{ task.id }})">View Details</button>
-        </li>
+            <button onclick="showTaskDetails({{ project.team.id }}, {{ project.id }}, {{ task.id }})">View Details</button>        </li>
     {% empty %}
         <li>No unassigned tasks.</li>
     {% endfor %}
 </ul>
 
-<a href="{% url 'add_task_view' project.id %}">Add Task</a>
+<a href="{% url 'add_task_view' project.team.id project.id %}">Add Task</a>
 <a href="{% url 'team_page_view' project.team.id %}">Back to Team Page</a>
 
 <!-- Modal for Task Details -->

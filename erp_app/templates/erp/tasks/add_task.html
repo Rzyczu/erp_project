@@ -9,7 +9,7 @@
 <body>
 
 <h1>Add Task</h1>
-<form method="post" enctype="multipart/form-data" id="addTaskForm">
+<form id="addTaskForm" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <div id="milestones-container">

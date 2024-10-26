@@ -40,7 +40,7 @@
         {% for project in projects %}
         <li>
             {{ project.name }} -
-            <a href="{% url 'project_page_view' project.id %}">Select project</a>
+            <a href="{% url 'project_page_view' project.team.id project.id %}">Select project</a>
         </li>
         {% empty %}
         No projects assigned.

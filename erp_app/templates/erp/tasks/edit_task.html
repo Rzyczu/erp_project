@@ -9,7 +9,7 @@
 <body>
 
 <h1>Edit Task: {{ task.name }}</h1>
-<form method="post" enctype="multipart/form-data" id="taskForm">
+<form method="post" enctype="multipart/form-data" id="editTaskForm">
     {% csrf_token %}
     {{ form.as_p }}
     <div id="milestones-container">
@@ -25,6 +25,6 @@
     <button type="submit">Save Task</button>
 </form>
 
-<script src="{% static 'js/add_task.js' %}"></script>
+<script src="{% static 'js/edit_task.js' %}"></script>
 </body>
 </html>
